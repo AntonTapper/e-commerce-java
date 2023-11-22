@@ -1,11 +1,12 @@
 package com.example.ecommerce.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import javax.management.relation.Role;
+import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -15,6 +16,11 @@ public class User {
     private String username;
     private String password;
     private String email;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 
     public User(String username, String password, String email) {
         this.username = username;
