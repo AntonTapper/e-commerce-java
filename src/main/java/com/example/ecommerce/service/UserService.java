@@ -1,4 +1,8 @@
 package com.example.ecommerce.service;
 
-public class UserService {
+import com.example.ecommerce.entity.User;
+
+public interface UserService {
+    User registerUser(User user);
+    User getUserById(Long userId);
 }
