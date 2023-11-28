@@ -2,7 +2,6 @@ package com.example.ecommerce.entity;
 
 import jakarta.persistence.*;
 
-import javax.management.relation.Role;
 import java.util.Set;
 
 @Entity
