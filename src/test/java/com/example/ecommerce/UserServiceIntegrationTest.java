@@ -3,16 +3,17 @@ package com.example.ecommerce;
 import com.example.ecommerce.entity.User;
 import com.example.ecommerce.repository.UserRepository;
 import com.example.ecommerce.service.UserService;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Import(UserService.class)
+@AutoConfigureMockMvc
 public class UserServiceIntegrationTest {
 
     @Autowired
@@ -25,6 +26,7 @@ public class UserServiceIntegrationTest {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Test
+    @Transactional
     public void testRegisterUser() {
         //Given
         String username = "user1";
