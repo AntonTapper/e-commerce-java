@@ -14,30 +14,23 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
-   /* @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }*/
+   @Override
+   public User registerUser(UserDTO userDTO) {
 
-    @Override
-    public User registerUser(UserDTO userDTO) {
+       if(userRepository.findByUsername(userDTO.getUsername()).isPresent() ||
+               userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+           throw new RuntimeException("Username or email already exists");
+       }
+       /* Create a new user entity */
+       User user = new User(userDTO.getUsername(), userDTO.getEmail(), userDTO.getPassword());
 
-        if(userRepository.findByUsername(userDTO.getUsername()).isPresent() ||
-        userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
-            throw new RuntimeException("Username or email already exists");
-        }
+       String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
+       user.setPassword(hashedPassword);
 
-        User user = new User(userDTO.getUsername(), userDTO.getEmail(), userDTO.getPassword());
 
-        String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
-        user.setPassword(hashedPassword);
+       return userRepository.save(user);
+   }
 
-        // Set default role or roles as needed
-        // user.setRoles(...);
-
-        return userRepository.save(user);
-    }
 
     @Override
     public User getUserByUsername(String username) {
